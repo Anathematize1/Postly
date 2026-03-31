@@ -58,11 +58,10 @@ class PostAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('text', 'author', 'post', 'created_at', 'is_published')
+    list_display = ('text', 'author', 'post', 'created_at')
     list_filter = ('author', 'created_at', 'post')
     search_fields = ('text', 'author__username', 'post__title')
     list_select_related = ('author', 'post')
-    list_editable = ('is_published',)
     ordering = ('-created_at',)
     list_per_page = 25
 

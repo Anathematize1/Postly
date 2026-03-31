@@ -10,7 +10,14 @@ User = get_user_model()
 class CreatePostForm(forms.ModelForm):
     class Meta:
         model = Post
-        exclude = ('author', 'is_published')
+        widgets = {
+            'pub_date': forms.DateTimeInput(
+                attrs={
+                    'type': 'datetime-local',
+                }
+            )
+        }
+        exclude = ('author',)
 
 
 class ProfileEditForm(forms.ModelForm):

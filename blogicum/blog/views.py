@@ -1,5 +1,5 @@
-from datetime import datetime
-
+from django.utils import timezone
+from django.http import Http404
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import get_user_model
@@ -15,25 +15,30 @@ User = get_user_model()
 POSTS_PER_PAGE = 10
 
 
-def paginate(request, queryset):
+def paginate(request, queryset, posts_per_page=POSTS_PER_PAGE):
     """Разбивает queryset на страницы."""
-    paginator = Paginator(queryset, POSTS_PER_PAGE)
+    paginator = Paginator(queryset, posts_per_page)
     page_number = request.GET.get('page')
     return paginator.get_page(page_number)
 
 
-def get_queryset_posts():
+def get_queryset_posts(with_filters=False, with_sorting_and_annotation=False):
     """Возвращает отсортированные посты."""
-    return (
-        Post.objects.select_related('category', 'author', 'location')
-        .annotate(comment_count=Count('comments'))
-        .filter(
-            pub_date__lte=datetime.now(),
+    queryset = Post.objects.select_related('category', 'author', 'location')
+
+    if with_filters:
+        queryset = queryset.filter(
+            pub_date__lte=timezone.now(),
             is_published=True,
             category__is_published=True
         )
-        .order_by('-pub_date')
-    )
+
+    if with_sorting_and_annotation:
+        queryset = queryset.annotate(
+            comment_count=Count('comments')
+        ).order_by('-pub_date')
+
+    return queryset
 
 
 def profile(request, username):
@@ -41,12 +46,13 @@ def profile(request, username):
     profile = get_object_or_404(User, username=username)
 
     if request.user == profile:
-        user_posts = Post.objects.annotate(
-            comment_count=Count('comments')
-        ).filter(author=profile
-                 ).order_by('-pub_date')
+        user_posts = get_queryset_posts(with_sorting_and_annotation=True)
     else:
-        user_posts = get_queryset_posts().filter(author=profile)
+        user_posts = get_queryset_posts(
+            with_filters=True,
+            with_sorting_and_annotation=True
+        )
+    user_posts = user_posts.filter(author=profile)
 
     page_obj = paginate(request, user_posts)
     context = {
@@ -82,6 +88,7 @@ def create_post(request):
     return render(request, 'blog/create.html', context)
 
 
+@login_required
 def edit_post(request, post_id):
     """Отображает страницу редактирования публикации пользователя."""
     post = get_object_or_404(Post, pk=post_id)
@@ -106,6 +113,7 @@ def edit_post(request, post_id):
     return render(request, 'blog/create.html', context)
 
 
+@login_required
 def delete_post(request, post_id):
     """Отображает страницу удаления публикации пользователя"""
     user = request.user
@@ -137,9 +145,10 @@ def add_comment(request, post_id):
         comment.post = post
         comment.save()
 
-        return redirect('blog:post_detail', post_id)
+    return redirect('blog:post_detail', post_id)
 
 
+@login_required
 def edit_comment(request, post_id, comment_id):
     """Редактирует комментарий пользователя."""
     comment = get_object_or_404(Comment, id=comment_id, post_id=post_id)
@@ -161,6 +170,7 @@ def edit_comment(request, post_id, comment_id):
     return render(request, 'blog/comment.html', context)
 
 
+@login_required
 def delete_comment(request, post_id, comment_id):
     """Удаляет комментарий пользователя."""
     comment = get_object_or_404(Comment, id=comment_id, post_id=post_id)
@@ -177,7 +187,10 @@ def delete_comment(request, post_id, comment_id):
 
 def index(request):
     """Отображает главную страницу со списком публикаций."""
-    post_list = get_queryset_posts()
+    post_list = get_queryset_posts(
+        with_filters=True,
+        with_sorting_and_annotation=True
+    )
     page_obj = paginate(request, post_list)
     context = {'page_obj': page_obj}
     return render(request, 'blog/index.html', context)
@@ -187,13 +200,15 @@ def post_detail(request, post_id):
     """Отображает страницу отдельной публикации."""
     post = get_object_or_404(Post, pk=post_id)
 
-    if request.user != post.author:
-        post = get_object_or_404(get_queryset_posts(), pk=post_id)
+    if request.user != post.author and (
+        not post.is_published
+        or not post.category.is_published
+        or post.pub_date > timezone.now()
+    ):
+        raise Http404
 
     form = CommentForm()
-    comments = post.comments.filter(
-        is_published=True
-    )
+    comments = post.comments.select_related('author')
     context = {
         'post': post,
         'form': form,
@@ -210,7 +225,11 @@ def category_posts(request, category_slug):
         is_published=True
     )
 
-    post_list = get_queryset_posts().filter(category=category)
+    post_list = get_queryset_posts(
+        with_filters=True,
+        with_sorting_and_annotation=True
+    ).filter(category=category)
+
     page_obj = paginate(request, post_list)
     context = {'category': category, 'page_obj': page_obj}
     return render(request, 'blog/category.html', context)

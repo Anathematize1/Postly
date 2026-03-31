@@ -101,6 +101,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_FAILURE_VIEW = 'pages.views.csrf_failure'
 
+LOGIN_URL = '/auth/login/'
+
 LOGIN_REDIRECT_URL = 'blog:index'
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'

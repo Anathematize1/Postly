@@ -102,7 +102,7 @@ class Location(BaseModel):
         return self.name
 
 
-class Comment(BaseModel):
+class Comment(models.Model):
     author = models.ForeignKey(
         User,
         related_name='comments',
@@ -111,6 +111,8 @@ class Comment(BaseModel):
     )
 
     text = models.TextField('текст комментария')
+
+    created_at = models.DateTimeField('Добавлено', auto_now_add=True)
 
     post = models.ForeignKey(
         Post,
