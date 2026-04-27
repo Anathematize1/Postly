@@ -43,24 +43,30 @@
 - Bootstrap
 
 
-## ⚙️ Запуск проекта: 1. Клонировать репозиторий:
+## ⚙️ Запуск проекта: 
+1. Клонировать репозиторий:
 bash```
 git clone <repo_url>
 cd blogicum```
+
 2. Создать виртуальное окружение:
 bash```
 python -m venv venv
 source venv/bin/activate  # Linux / Mac
 venv\Scripts\activate     # Windows```
+
 3. Установить зависимости:
 bash```
 pip install -r requirements.txt```
+
 4. Применить миграции:
 bash```
 python manage.py migrate```
+
 5. Запустить сервер:
 bash```
 python manage.py runserver```
+
 6. Открыть в браузере:
 bash```
 http://127.0.0.1:8000/```
