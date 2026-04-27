@@ -39,7 +39,7 @@ INTERNAL_IPS = [
     '127.0.0.1',
 ]
 
-ROOT_URLCONF = 'blogicum.urls'
+ROOT_URLCONF = 'postly.urls'
 
 TEMPLATES = [
     {
@@ -57,7 +57,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'blogicum.wsgi.application'
+WSGI_APPLICATION = 'postly.wsgi.application'
 
 DATABASES = {
     'default': {

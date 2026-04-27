@@ -65,13 +65,13 @@ def test_link_order_in_comment_template():
     expected_template_dir = settings.BASE_DIR / "templates"
     assert expected_template_dir.is_dir(), (
         "Убедитесь, что шаблоны проекта располагаются в директории "
-        "`./blogicum/templates` (на уровне с файлом `manage.py`)."
+        "`./postly/templates` (на уровне с файлом `manage.py`)."
     )
     comment_template_file = (
         expected_template_dir / 'includes' / 'comments.html'
     )
     assert comment_template_file.is_file(), (
-        "Убедитесь, что в директории `./blogicum/templates/includes` есть "
+        "Убедитесь, что в директории `./postly/templates/includes` есть "
         "файл `comments.html`."
     )
     with open(
@@ -85,7 +85,7 @@ def test_link_order_in_comment_template():
     )
     assert expected_link_order_pattern.search(comments_template), (
         "Не изменяйте порядок ссылок для редактировани и удаления комментария "
-        "в шаблоне `./blogicum/templates/includes/comments.html`. Первой "
+        "в шаблоне `./postly/templates/includes/comments.html`. Первой "
         "должна быть ссылка на редактирование, второй - на удаление."
     )
 

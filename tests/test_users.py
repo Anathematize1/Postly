@@ -25,12 +25,12 @@ class ManageProfileLinksException(Exception):
 @pytest.mark.django_db
 def test_custom_err_handlers(client):
     try:
-        from blogicum import urls as blogicum_urls
+        from postly import urls as postly_urls
     except Exception:
         raise AssertionError(
             "Убедитесь, в головном файле с маршрутами нет ошибок."
         )
-    urls_src_squashed = squash_code(inspect.getsource(blogicum_urls))
+    urls_src_squashed = squash_code(inspect.getsource(postly_urls))
     if "django.contrib.auth.urls" not in urls_src_squashed:
         raise AssertionError(
             "Убедитесь, что подключены маршруты для работы с пользователями из"

@@ -65,7 +65,7 @@ def test_custom_err_handlers(client, user_client):
         ), f"Убедитесь, что файл шаблона `{fpath}` существует."
 
     try:
-        from blogicum.urls import handler500
+        from postly.urls import handler500
     except Exception:
         raise AssertionError(
             "Убедитесь, что в головном файле с маршрутами нет ошибок и что в"

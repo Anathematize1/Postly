@@ -1,0 +1,121 @@
+{% load static %}
+{% load django_bootstrap5 %}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{% static 'img/fav/favicon.ico' %}" type="image">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/fav/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/fav/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/fav/favicon-16x16.png' %}">
+    <title>
+      {% block title %}{% endblock %}
+    </title>
+    {% bootstrap_css %}
+    <style>
+      body {
+        background-color: #111111;
+        color: #f8f9fa;
+      }
+
+      .navbar {
+        background-color: #2b3035 !important;
+        border-bottom: 1px solid #495057;
+      }
+
+      .card,
+      .card-body {
+        background-color: #1f2327 !important;
+        color: #f8f9fa !important;
+        border-color: #495057 !important;
+      }
+
+      .card-header,
+      .card-footer {
+        background-color: #2b3035 !important;
+        color: #f8f9fa !important;
+        border-color: #495057 !important;
+      }
+
+      .form-control,
+      .form-select,
+      textarea,
+      input {
+        background-color: #1f2327 !important;
+        color: #f8f9fa !important;
+        border-color: #495057 !important;
+      }
+
+      .form-control:focus,
+      .form-select:focus,
+      textarea:focus,
+      input:focus {
+        background-color: #1f2327 !important;
+        color: #ffffff !important;
+        border-color: #f8f9fa !important;
+        box-shadow: 0 0 0 0.2rem rgba(248, 249, 250, 0.15) !important;
+      }
+
+      label,
+      .form-label,
+      .form-text,
+      .helptext {
+        color: #f8f9fa !important;
+      }
+
+      .btn-primary,
+      .btn-outline-primary {
+        color: #f8f9fa !important;
+        border-color: #f8f9fa !important;
+        background-color: transparent !important;
+      }
+
+      .btn-primary:hover,
+      .btn-outline-primary:hover {
+        color: #212529 !important;
+        background-color: #f8f9fa !important;
+        border-color: #f8f9fa !important;
+      }
+
+      .nav.nav-pills .nav-link {
+        color: #f8f9fa !important;
+      }
+
+      .nav.nav-pills .nav-link.active,
+      .nav.nav-pills .show > .nav-link,
+      .nav.nav-pills .nav-link:hover {
+        background-color: #f8f9fa !important;
+        color: #212529 !important;
+      }
+
+      a {
+        color: #f8f9fa;
+      }
+
+      a:hover {
+        color: #ffffff;
+      }
+
+      .text-muted {
+        color: #adb5bd !important;
+      }
+
+      .list-group-item,
+      .alert {
+        background-color: #1f2327 !important;
+        color: #f8f9fa !important;
+        border-color: #495057 !important;
+      }
+    </style>
+  </head>
+  <body <body class="bg-dark text-light">
+    {% include "includes/header.html" %}
+    <main>
+      <div class="container py-5">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+    {% include "includes/footer.html" %}
+  </body>
+</html>

@@ -353,7 +353,7 @@ def cleanup(request):
 
     yield
 
-    from blogicum import settings
+    from postly import settings
 
     image_dir = Path(settings.__file__).parent.parent / settings.MEDIA_ROOT
 

@@ -1,0 +1,51 @@
+{% load static %}
+<header>
+  <nav class="navbar navbar-dark" style="background-color: #2b3035; border-bottom: 1px solid #495057;">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'blog:index' %}">
+        <img src="{% static 'img/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+        Postly
+      </a>
+      {% with request.resolver_match.view_name as view_name %}
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a class="nav-link text-light {% if view_name == 'pages:about' %} active {% endif %}" href="{% url 'pages:about' %}">
+              О проекте
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-light {% if view_name == 'pages:rules' %} active {% endif %}" href="{% url 'pages:rules' %}">
+              Правила
+            </a>
+          </li>
+
+          {% if user.is_authenticated %}
+            <div class="btn-group" role="group" aria-label="Basic outlined example">
+              <a class="btn btn-outline-light" href="{% url 'blog:create_post' %}">
+                Написать пост
+              </a>
+              <a class="btn btn-outline-light" href="{% url 'blog:profile' user.username %}">
+                {{ user.username }}
+              </a>
+              <form method="post" action="{% url 'logout' %}" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-light">
+                  Выйти
+                </button>
+              </form>
+            </div>
+          {% else %}
+            <div class="btn-group" role="group" aria-label="Basic outlined example">
+              <a class="btn btn-outline-light" href="{% url 'login' %}">
+                Войти
+              </a>
+              <a class="btn btn-outline-light" href="{% url 'registration' %}">
+                Регистрация
+              </a>
+            </div>
+          {% endif %}
+        </ul>
+      {% endwith %}
+    </div>
+  </nav>
+</header>
