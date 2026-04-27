@@ -45,31 +45,37 @@
 
 ## ⚙️ Запуск проекта: 
 1. Клонировать репозиторий:
-bash```
+```bash
 git clone <repo_url>
-cd blogicum```
+cd blogicum
+```
 
-2. Создать виртуальное окружение:
-bash```
+2. Создать и активировать виртуальное окружение:
+```bash
 python -m venv venv
 source venv/bin/activate  # Linux / Mac
-venv\Scripts\activate     # Windows```
+venv\Scripts\activate     # Windows
+```
 
 3. Установить зависимости:
-bash```
-pip install -r requirements.txt```
+```bash
+pip install -r requirements.txt
+```
 
 4. Применить миграции:
-bash```
-python manage.py migrate```
+```bash
+python manage.py migrate
+```
 
 5. Запустить сервер:
-bash```
-python manage.py runserver```
+```bash
+python manage.py runserver
+```
 
 6. Открыть в браузере:
-bash```
-http://127.0.0.1:8000/```
+```bash
+http://127.0.0.1:8000/
+```
 
 
 ## 📌 Особенности проекта: - реализована система прав доступа (пользователь управляет только своими объектами) - используется Django ORM для работы с базой данных - реализована пагинация - настроена расширенная админ-панель - спользуется шаблонизация Django - реализована работа с формами и валидацией данных
